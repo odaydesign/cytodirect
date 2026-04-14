@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="CytoDirect Eva">
+<meta name="theme-color" content="#0a1628">
+<title>CytoDirect — Eva</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Eva">
+<meta name="apple-touch-fullscreen" content="yes">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg: #ffffff;
+  --bg2: #f8f9fc;
+  --bg3: #f1f4f9;
+  --border: #e5e7eb;
+  --border2: #d1d5db;
+  --text: #111827;
+  --text2: #6b7280;
+  --text3: #9ca3af;
+  --blue: #0066cc;
+  --blue-light: #eff6ff;
+  --blue-mid: #bfdbfe;
+  --blue-dark: #1e40af;
+  --eva: #6366f1;
+  --eva-light: #eef2ff;
+  --eva-mid: #c7d2fe;
+  --green: #059669;
+  --green-light: #ecfdf5;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, sans-serif;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══ WELCOME SCREEN ══════════════════════════════════════════════ */
+.welcome {
+  position: fixed; inset: 0; z-index: 100;
+  display: flex; flex-direction: column;
+  background: var(--bg);
+  overflow-y: auto;
+}
+.welcome.out {
+  animation: slideOut .4s ease forwards;
+}
+@keyframes slideOut {
+  to { opacity: 0; transform: translateY(-20px); }
+}
+
+.w-hero {
+  background: #0a1628;
+  padding: calc(var(--safe-top) + 40px) 24px 36px;
+  position: relative; overflow: hidden;
+}
+.w-hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(99,102,241,.15) 0%, transparent 60%);
+}
+.w-logo {
+  font-size: 11px; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: rgba(255,255,255,.4);
+  margin-bottom: 32px; position: relative; z-index: 1;
+}
+.w-headline {
+  font-size: 28px; font-weight: 700; color: #fff;
+  line-height: 1.15; letter-spacing: -.03em;
+  margin-bottom: 10px; position: relative; z-index: 1;
+}
+.w-sub {
+  font-size: 14px; color: rgba(255,255,255,.5);
+  line-height: 1.6; position: relative; z-index: 1;
+}
+.w-eva-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(99,102,241,.2); border: 1px solid rgba(99,102,241,.3);
+  border-radius: 20px; padding: 5px 12px;
+  font-size: 11px; color: #a5b4fc; font-weight: 500;
+  margin-bottom: 20px; position: relative; z-index: 1;
+}
+.eva-dot { width: 6px; height: 6px; border-radius: 50%; background: #818cf8; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+.w-form {
+  flex: 1; padding: 28px 24px;
+  display: flex; flex-direction: column; gap: 24px;
+}
+
+.w-field {}
+.w-label {
+  font-size: 12px; font-weight: 600; color: var(--text);
+  letter-spacing: .02em; margin-bottom: 8px; display: block;
+}
+.w-input {
+  width: 100%; padding: 13px 16px;
+  border: 1.5px solid var(--border2);
+  border-radius: var(--radius-sm);
+  font-size: 16px; color: var(--text);
+  font-family: 'Inter', sans-serif;
+  background: var(--bg); outline: none;
+  transition: border-color .15s;
+}
+.w-input:focus { border-color: var(--blue); }
+.w-input::placeholder { color: var(--text3); font-size: 15px; }
+
+.w-roles {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.w-role {
+  padding: 12px 14px;
+  border: 1.5px solid var(--border2);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  cursor: pointer;
+  transition: all .15s;
+  display: flex; align-items: center; gap: 10px;
+}
+.w-role:active { transform: scale(.98); }
+.w-role.on {
+  border-color: var(--blue);
+  background: var(--blue-light);
+}
+.w-role-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--bg3);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 15px;
+  transition: background .15s;
+}
+.w-role.on .w-role-icon { background: var(--blue-mid); }
+.w-role-info {}
+.w-role-name { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.2; }
+.w-role-sub { font-size: 10px; color: var(--text3); margin-top: 1px; }
+.w-role.on .w-role-name { color: var(--blue-dark); }
+
+.w-start {
+  width: 100%; padding: 15px;
+  background: var(--blue);
+  color: #fff; font-size: 15px; font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  border: none; border-radius: var(--radius-sm);
+  cursor: pointer; transition: all .15s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.w-start:active { transform: scale(.98); background: var(--blue-dark); }
+.w-start:disabled { opacity: .4; }
+
+.w-note {
+  font-size: 11px; color: var(--text3);
+  text-align: center; line-height: 1.6;
+  padding-bottom: calc(var(--safe-bottom) + 16px);
+}
+
+/* ══ MAIN APP ════════════════════════════════════════════════════ */
+.app {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+  opacity: 0; pointer-events: none;
+  transition: opacity .35s;
+}
+.app.show { opacity: 1; pointer-events: all; }
+
+/* HEADER */
+.hdr {
+  flex-shrink: 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hdr-eva {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; cursor: pointer;
+  box-shadow: 0 0 0 2px var(--eva-light);
+}
+.hdr-info { flex: 1; min-width: 0; }
+.hdr-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.hdr-status {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 11px; color: var(--green);
+}
+.status-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+.hdr-reset {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--bg2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0;
+}
+
+/* TABS */
+.tabs {
+  flex-shrink: 0;
+  display: flex;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0 4px;
+}
+.tab {
+  flex: 1; padding: 10px 4px;
+  font-size: 12px; font-weight: 500;
+  color: var(--text3); border: none; background: transparent;
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px; transition: all .15s;
+}
+.tab.on { color: var(--blue); border-bottom-color: var(--blue); }
+
+/* PANES */
+.pane { display: none; flex: 1; overflow: hidden; flex-direction: column; }
+.pane.on { display: flex; }
+
+/* HOME BANNER */
+.home-banner {
+  flex-shrink: 0;
+  padding: 16px 16px 12px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.hb-greeting {
+  font-size: 20px; font-weight: 700; color: var(--text);
+  letter-spacing: -.02em; margin-bottom: 3px;
+}
+.hb-sub { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.hb-context {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 8px; padding: 4px 10px;
+  background: var(--eva-light); border: 1px solid var(--eva-mid);
+  border-radius: 20px; font-size: 11px; color: var(--eva);
+  font-weight: 500;
+}
+.hb-ctx-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--eva); animation: pulse 2s infinite; }
+
+/* MESSAGES */
+.msgs {
+  flex: 1; overflow-y: auto; padding: 16px;
+  display: flex; flex-direction: column; gap: 12px;
+  background: var(--bg2);
+}
+.msgs::-webkit-scrollbar { width: 3px; }
+.msgs::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.msg-group { display: flex; flex-direction: column; gap: 2px; }
+.msg-group.user { align-items: flex-end; }
+
+.msg-meta {
+  font-size: 10px; color: var(--text3); padding: 0 12px;
+  margin-bottom: 4px; font-weight: 500;
+}
+.msg-meta.eva { color: var(--eva); }
+
+.bubble {
+  max-width: 88%; padding: 11px 14px;
+  font-size: 13.5px; line-height: 1.58;
+  border-radius: 18px;
+}
+.bubble.eva {
+  background: var(--bg); color: var(--text);
+  border-radius: 4px 18px 18px 18px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.bubble.user {
+  background: var(--blue); color: #fff;
+  border-radius: 18px 18px 4px 18px;
+}
+.bubble-time { font-size: 10px; color: var(--text3); padding: 0 12px; margin-top: 2px; text-align: right; }
+.bubble-time.eva { text-align: left; }
+
+.typing-bubble {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 4px 18px 18px 18px;
+  padding: 12px 16px; display: flex; gap: 4px;
+  align-items: center; box-shadow: var(--shadow);
+  width: fit-content;
+}
+.t-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text3); animation: tdot 1.2s infinite; }
+.t-dot:nth-child(2) { animation-delay: .2s; }
+.t-dot:nth-child(3) { animation-delay: .4s; }
+@keyframes tdot { 0%,60%,100%{transform:translateY(0);opacity:.3} 30%{transform:translateY(-4px);opacity:1} }
+
+/* QUICK REPLIES */
+.qr-area {
+  flex-shrink: 0; padding: 8px 16px 10px;
+  background: var(--bg); border-top: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.qr-label { font-size: 10px; color: var(--text3); font-weight: 500; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 2px; }
+.qr-pill {
+  padding: 9px 14px; border-radius: 20px;
+  border: 1px solid var(--border2); background: var(--bg);
+  color: var(--text); font-size: 13px; font-family: 'Inter', sans-serif;
+  cursor: pointer; text-align: left;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: all .12s; width: 100%; font-weight: 400;
+}
+.qr-pill:active { background: var(--bg2); }
+.qr-arr { color: var(--text3); font-size: 16px; line-height: 1; }
+
+/* INPUT */
+.input-row {
+  flex-shrink: 0; padding: 10px 12px 12px;
+  display: flex; gap: 8px; align-items: flex-end;
+  background: var(--bg); border-top: 1px solid var(--border);
+}
+.msg-field {
+  flex: 1; background: var(--bg2); border: 1.5px solid var(--border2);
+  border-radius: 22px; padding: 10px 16px;
+  font-size: 14px; color: var(--text); font-family: 'Inter', sans-serif;
+  outline: none; resize: none; max-height: 100px; min-height: 40px; line-height: 1.4;
+  transition: border-color .15s;
+}
+.msg-field:focus { border-color: var(--blue-mid); }
+.msg-field::placeholder { color: var(--text3); }
+.send-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--blue); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all .15s;
+}
+.send-btn:active { transform: scale(.92); }
+.send-btn:disabled { opacity: .35; }
+
+/* RESOURCES */
+.res-scroll { flex: 1; overflow-y: auto; padding: 16px; background: var(--bg2); }
+.res-scroll::-webkit-scrollbar { width: 3px; }
+.res-sec { margin-bottom: 22px; }
+.res-sec-lbl { font-size: 11px; font-weight: 600; color: var(--text2); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 10px; }
+.res-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px;
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 8px; cursor: pointer;
+  transition: all .12s; box-shadow: var(--shadow);
+}
+.res-card:active { transform: scale(.99); box-shadow: none; }
+.res-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--blue-light); display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0;
+}
+.res-body { flex: 1; min-width: 0; }
+.res-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; line-height: 1.3; }
+.res-sub { font-size: 11px; color: var(--text2); }
+.res-badge {
+  font-size: 10px; padding: 3px 8px; border-radius: 10px;
+  font-weight: 600; flex-shrink: 0; white-space: nowrap;
+}
+.badge-blue { background: var(--blue-light); color: var(--blue); }
+.badge-green { background: var(--green-light); color: var(--green); }
+.badge-eva { background: var(--eva-light); color: var(--eva); }
+.res-arr { color: var(--text3); font-size: 18px; flex-shrink: 0; line-height: 1; }
+
+/* ABOUT EVA */
+.about-scroll { flex: 1; overflow-y: auto; background: var(--bg2); }
+.about-hero {
+  background: #0a1628; padding: 28px 20px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  position: relative; overflow: hidden;
+}
+.about-hero::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 30%, rgba(99,102,241,.2) 0%, transparent 60%);
+}
+.eva-avatar {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 1;
+  box-shadow: 0 0 0 4px rgba(99,102,241,.2), 0 0 0 8px rgba(99,102,241,.1);
+}
+.eva-ai-label {
+  position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%);
+  background: #6366f1; color: #fff;
+  font-size: 8px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 6px; white-space: nowrap;
+}
+.about-name { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: -.02em; position: relative; z-index: 1; }
+.about-role { font-size: 13px; color: rgba(255,255,255,.5); text-align: center; line-height: 1.5; position: relative; z-index: 1; }
+.about-stats {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+}
+.astat { padding: 16px 12px; text-align: center; border-right: 1px solid var(--border); }
+.astat:last-child { border-right: none; }
+.astat-n { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 3px; letter-spacing: -.02em; }
+.astat-l { font-size: 10px; color: var(--text3); line-height: 1.35; }
+.about-section { padding: 18px 16px; border-bottom: 1px solid var(--border); background: var(--bg); margin-bottom: 8px; }
+.about-sec-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.about-text { font-size: 13px; color: var(--text2); line-height: 1.7; }
+.about-quote {
+  margin-top: 10px; padding: 12px 14px;
+  background: var(--eva-light); border-left: 3px solid var(--eva);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 13px; color: var(--eva); font-style: italic; line-height: 1.6;
+}
+.cap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.cap-item {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 10px 12px;
+}
+.cap-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.cap-sub { font-size: 11px; color: var(--text3); line-height: 1.4; }
+.handoff-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 16px;
+  margin: 16px 16px 0;
+  box-shadow: var(--shadow);
+}
+.hc-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.hc-desc { font-size: 12px; color: var(--text2); line-height: 1.55; margin-bottom: 12px; }
+.hc-btn {
+  width: 100%; padding: 11px; border-radius: var(--radius-sm);
+  background: var(--blue); color: #fff;
+  font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif;
+  border: none; cursor: pointer;
+}
+
+/* MODAL */
+.modal-bd {
+  position: fixed; inset: 0; background: rgba(0,0,0,.35);
+  z-index: 50; display: none; align-items: flex-end;
+}
+.modal-bd.on { display: flex; }
+.modal {
+  background: var(--bg); border-radius: 20px 20px 0 0;
+  width: 100%; max-height: 85vh; overflow-y: auto;
+  padding-bottom: calc(16px + var(--safe-bottom));
+}
+.modal::-webkit-scrollbar { width: 3px; }
+.modal-hdr {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 18px 14px; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: var(--bg); z-index: 1;
+}
+.modal-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.modal-close {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--bg2); border: 1px solid var(--border);
+  cursor: pointer; font-size: 16px; color: var(--text2);
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-body { padding: 18px; font-size: 13px; color: var(--text2); line-height: 1.75; }
+.modal-body h4 { font-size: 13px; font-weight: 600; color: var(--text); margin: 14px 0 6px; }
+.modal-body h4:first-child { margin-top: 0; }
+.modal-body ul { padding-left: 18px; margin: 6px 0; }
+.modal-body ul li { margin-bottom: 4px; }
+.modal-body p { margin-bottom: 10px; }
+.modal-body strong { color: var(--text); font-weight: 600; }
+.modal-acts { padding: 0 18px 18px; display: flex; flex-direction: column; gap: 8px; }
+.m-btn { padding: 13px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; border: none; text-align: center; }
+.m-primary { background: var(--blue); color: #fff; }
+.m-outline { background: transparent; border: 1.5px solid var(--border2); color: var(--text2); font-weight: 500; }
+
+/* ANIMATIONS */
+.fade-up { animation: fadeUp .25s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* HANDOFF BANNER */
+.handoff-bar {
+  flex-shrink: 0; padding: 10px 16px;
+  background: var(--blue-light); border-top: 1px solid var(--blue-mid);
+  display: flex; align-items: center; gap: 10px;
+}
+.hb-icon { font-size: 16px; }
+.hb-text { flex: 1; font-size: 12px; color: var(--blue-dark); line-height: 1.4; }
+.hb-action {
+  font-size: 12px; font-weight: 600; color: var(--blue);
+  background: transparent; border: none; cursor: pointer; font-family: 'Inter', sans-serif; white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<!-- ══ WELCOME SCREEN ══ -->
+<div class="welcome" id="welcome">
+  <div class="w-hero">
+    <div class="w-logo">Mettler Toledo · CytoDirect</div>
+    <div class="w-eva-chip"><div class="eva-dot"></div>Eva · AI specialist</div>
+    <div class="w-headline">Your personal<br>CytoDirect specialist<br>is waiting for you.</div>
+    <div class="w-sub" style="margin-top:8px">Tell us a little about yourself and Eva will personalise everything for your role and research context.</div>
+  </div>
+
+  <div class="w-form">
+    <div class="w-field">
+      <label class="w-label">Your first name</label>
+      <input class="w-input" id="nameInput" type="text" placeholder="E.g. Sarah" autocomplete="given-name" autocorrect="off" autocapitalize="words"/>
+    </div>
+
+    <div class="w-field">
+      <label class="w-label">Your role</label>
+      <div class="w-roles" id="rolesGrid">
+        <div class="w-role" data-role="researcher" data-label="Researcher" onclick="selectRole(this)">
+          <div class="w-role-icon">🔬</div>
+          <div class="w-role-info"><div class="w-role-name">Researcher</div><div class="w-role-sub">Lab / academia</div></div>
+        </div>
+        <div class="w-role" data-role="biopharma" data-label="BioPharma / QA" onclick="selectRole(this)">
+          <div class="w-role-icon">🏭</div>
+          <div class="w-role-info"><div class="w-role-name">BioPharma / QA</div><div class="w-role-sub">GMP environment</div></div>
+        </div>
+        <div class="w-role" data-role="labmanager" data-label="Lab Manager" onclick="selectRole(this)">
+          <div class="w-role-icon">📋</div>
+          <div class="w-role-info"><div class="w-role-name">Lab Manager</div><div class="w-role-sub">Team oversight</div></div>
+        </div>
+        <div class="w-role" data-role="procurement" data-label="Procurement" onclick="selectRole(this)">
+          <div class="w-role-icon">💼</div>
+          <div class="w-role-info"><div class="w-role-name">Procurement</div><div class="w-role-sub">Purchasing / budget</div></div>
+        </div>
+        <div class="w-role" data-role="academic" data-label="Academic / PhD" onclick="selectRole(this)">
+          <div class="w-role-icon">🎓</div>
+          <div class="w-role-info"><div class="w-role-name">Academic / PhD</div><div class="w-role-sub">University research</div></div>
+        </div>
+        <div class="w-role" data-role="cro" data-label="CRO / Biotech" onclick="selectRole(this)">
+          <div class="w-role-icon">⚗️</div>
+          <div class="w-role-info"><div class="w-role-name">CRO / Biotech</div><div class="w-role-sub">Contract research</div></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="w-start" id="startBtn" onclick="startApp()" disabled>
+      <span>Meet Eva</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="w-note">Eva is an AI specialist trained on all CytoDirect product material, clinical data, application notes, and compliance documentation. For complex commercial discussions, she'll connect you with a real specialist.</div>
+  </div>
+</div>
+
+<!-- ══ MAIN APP ══ -->
+<div class="app" id="app">
+  <div class="hdr">
+    <div class="hdr-eva" onclick="showTab('about')">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#fff" stroke-width="1.2" opacity=".4"/><path d="M6 7.5C6 6.1 7.1 5 8.5 5h1C10.9 5 12 6.1 12 7.5c0 1.3-.9 2.4-2 2.4V11" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/><circle cx="9" cy="13" r=".8" fill="#fff"/></svg>
+    </div>
+    <div class="hdr-info">
+      <div class="hdr-name">Eva</div>
+      <div class="hdr-status"><div class="status-dot"></div>AI specialist · always available</div>
+    </div>
+    <div class="hdr-reset" onclick="resetApp()" title="Restart">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7A4.5 4.5 0 107 2.5" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round"/><path d="M7 2.5L5 5l2.5 1" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" onclick="showTab('conv')">Conversation</button>
+    <button class="tab" onclick="showTab('res')">Resources</button>
+    <button class="tab" onclick="showTab('about')">About Eva</button>
+  </div>
+
+  <!-- CONVERSATION -->
+  <div class="pane on" id="pane-conv">
+    <div class="home-banner">
+      <div class="hb-greeting" id="greeting">Hey there!</div>
+      <div class="hb-sub" id="greetingSub">Eva has prepared resources based on your role</div>
+      <div class="hb-context"><div class="hb-ctx-dot"></div><span id="ctxLabel">Loading…</span></div>
+    </div>
+    <div class="msgs" id="msgs"></div>
+    <div class="qr-area" id="qrArea"><div class="qr-label">Suggested questions</div></div>
+    <div class="input-row">
+      <textarea class="msg-field" id="msgField" placeholder="Ask Eva anything…" rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"
+        oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px'"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMsg()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 8 3 3v4l8 1-8 1v4z" fill="#fff"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- RESOURCES -->
+  <div class="pane" id="pane-res">
+    <div class="res-scroll" id="resScroll"></div>
+  </div>
+
+  <!-- ABOUT EVA -->
+  <div class="pane" id="pane-about">
+    <div class="about-scroll">
+      <div class="about-hero">
+        <div class="eva-avatar">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" stroke="#fff" stroke-width="1" opacity=".2"/><path d="M10 13c0-3.3 2.7-6 6-6s6 2.7 6 6c0 3.2-2 5.9-4.5 6.4V21" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><circle cx="16" cy="24" r="1.5" fill="#fff"/></svg>
+          <div class="eva-ai-label">AI</div>
+        </div>
+        <div class="about-name">Eva</div>
+        <div class="about-role">AI specialist · CytoDirect<br>Trained on all product and clinical data</div>
+      </div>
+      <div class="about-stats">
+        <div class="astat"><div class="astat-n">24/7</div><div class="astat-l">Always available</div></div>
+        <div class="astat"><div class="astat-n">90%</div><div class="astat-l">Questions answered independently</div></div>
+        <div class="astat"><div class="astat-n">&lt;3s</div><div class="astat-l">Response time</div></div>
+      </div>
+      <div class="about-section">
+        <div class="about-sec-title">What Eva is</div>
+        <div class="about-text">Eva is an AI specialist trained on the complete CytoDirect knowledge base — product specifications, application notes, validation data, GMP compliance documentation, competitive analysis, and real-world lab workflows.
+          <div class="about-quote">"Eva handles the questions that come at 11pm, on a Sunday, two weeks after you first looked at the product. The ones that only arise when you're actually thinking deeply about your workflow."</div>
+        </div>
+      </div>
+      <div class="about-section">
+        <div class="about-sec-title">What Eva can do for you</div>
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-title">Answer technical questions</div><div class="cap-sub">DHM technology, cell lines, viability accuracy</div></div>
+          <div class="cap-item"><div class="cap-title">GMP & compliance</div><div class="cap-sub">21 CFR Part 11, LabX, audit trails, method lockdown</div></div>
+          <div class="cap-item"><div class="cap-title">Workflow guidance</div><div class="cap-sub">Integration with your existing process, validation strategy</div></div>
+          <div class="cap-item"><div class="cap-title">Cost comparison</div><div class="cap-sub">Total cost of ownership vs. your current method</div></div>
+          <div class="cap-item"><div class="cap-title">Curated resources</div><div class="cap-sub">Application notes, validation data, case studies</div></div>
+          <div class="cap-item"><div class="cap-title">Human handoff</div><div class="cap-sub">Connects you to a specialist when needed</div></div>
+        </div>
+      </div>
+      <div class="handoff-card">
+        <div class="hc-title">Need to talk to a real person?</div>
+        <div class="hc-desc">For commercial discussions, pricing negotiations, or complex technical evaluations, Eva can connect you directly with a CytoDirect specialist at Mettler Toledo.</div>
+        <button class="hc-btn" onclick="showHandoff()">Request a specialist →</button>
+      </div>
+      <div style="height:24px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bd" id="modalBd" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-acts" id="modalActs"></div>
+  </div>
+</div>
+
+<script>
+// ── STATE ─────────────────────────────────────────────────────────
+let userName = '';
+let userRole = '';
+let userRoleLabel = '';
+let selectedRoleEl = null;
+let busy = false;
+
+// ── WELCOME ───────────────────────────────────────────────────────
+document.getElementById('nameInput').addEventListener('input', checkReady);
+
+function selectRole(el) {
+  if (selectedRoleEl) selectedRoleEl.classList.remove('on');
+  el.classList.add('on');
+  selectedRoleEl = el;
+  userRole = el.dataset.role;
+  userRoleLabel = el.dataset.label;
+  checkReady();
+}
+
+function checkReady() {
+  const name = document.getElementById('nameInput').value.trim();
+  document.getElementById('startBtn').disabled = !(name && userRole);
+}
+
+function startApp() {
+  const name = document.getElementById('nameInput').value.trim();
+  if (!name || !userRole) return;
+  userName = name;
+
+  // Save
+  localStorage.setItem('eva_name', userName);
+  localStorage.setItem('eva_role', userRole);
+  localStorage.setItem('eva_role_label', userRoleLabel);
+
+  // Animate out welcome
+  document.getElementById('welcome').classList.add('out');
+  setTimeout(() => {
+    document.getElementById('welcome').style.display = 'none';
+    document.getElementById('app').classList.add('show');
+    initApp();
+  }, 400);
+}
+
+// ── INIT APP ──────────────────────────────────────────────────────
+function initApp() {
+  // Check stored
+  const storedName = localStorage.getItem('eva_name');
+  if (storedName && !userName) {
+    userName = storedName;
+    userRole = localStorage.getItem('eva_role') || 'researcher';
+    userRoleLabel = localStorage.getItem('eva_role_label') || 'Researcher';
+  }
+
+  const tod = getTimeOfDay();
+  document.getElementById('greeting').textContent = `${tod}, ${userName}!`;
+  document.getElementById('greetingSub').textContent = `Eva has prepared resources based on your role`;
+  document.getElementById('ctxLabel').textContent = `${userRoleLabel} · CytoDirect specialist ready`;
+
+  buildResources();
+  startConversation();
+}
+
+function getTimeOfDay() {
+  const h = new Date().getHours();
+  return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+}
+
+// ── RESPONSE BRAIN ────────────────────────────────────────────────
+const BRAIN = {
+  'stain|trypan|blue|staining':
+    `CytoDirect eliminates the staining step completely.\n\nInstead of adding trypan blue and waiting, you load 20 µL of cell suspension directly onto a glass slide and get a result in 15 seconds. No reagents, no preparation delay, no cytotoxicity bias.\n\nThe technology is digital holographic microscopy — it measures each cell's refractive index directly. Live and dead cells have different optical properties, so DHM distinguishes them without any chemical label. The machine learning algorithm then classifies the cells in real time.\n\nThis also means your sample is completely unaltered — if you're running downstream assays, the cells you counted are the same cells you continue working with.`,
+
+  'gmp|cfr|21|compliance|audit|regulatory|part 11|alcoa':
+    `Yes — CytoDirect with LabX integration is fully 21 CFR Part 11 compliant.\n\n**Audit trail:** Every measurement is automatically logged with user ID, timestamp, method version, and result. The trail is tamper-evident — it cannot be edited or deleted.\n\n**Electronic signatures:** LabX supports compliant e-signatures for result approval. The manifest includes name, date, and meaning of signature.\n\n**Method lockdown:** Once a method is approved, operators can run it but cannot change any parameters. Any modification creates a new version with a new approval record.\n\n**Data integrity:** ALCOA+ compliant. Results transfer automatically from CytoDirect to LabX via Wi-Fi — no manual transcription, no spreadsheets.\n\nI have a complete 21 CFR Part 11 checklist in your Resources that maps every requirement to the specific LabX feature satisfying it.`,
+
+  'method lock|operator|setting|permission|role|access':
+    `In LabX, methods work on a strict approval hierarchy.\n\nOnce a method is approved by a QA manager or administrator, it becomes locked. Operators can **run** it but cannot change any of these parameters:\n- Measurement duration\n- Cell size gates and viability algorithm\n- Data export destination\n- Required metadata fields\n\nOperators can still fill in: sample ID, experiment name, and notes.\n\nIf a change is needed, a new method version must be created. That triggers the full approval workflow again — both versions remain in the audit trail. Nothing is overwritten.\n\nYour QA team can look at the system and be confident that every count used exactly the same parameters.`,
+
+  'validat|parallel|correlat|switch|transition':
+    `The standard approach is parallel validation — running CytoDirect alongside your existing trypan blue method until you have sufficient correlation data.\n\n**Timeline:** Most BioPharma sites complete validation in 4–8 weeks, depending on internal QA review cycles.\n\n**Protocol:** Typically 30–50 parallel counts across different viability ranges. I have a full validation protocol from a regulated EU site in your Resources.\n\n**Results from 3 GMP sites:**\n- Site A (EU): r² = 0.997, mean bias +0.8%\n- Site B (US): r² = 0.994, mean bias −1.2%\n- Site C (EU): r² = 0.996, mean bias +1.4%\n\nAll three sites accepted CytoDirect within their ±3% acceptance criteria within 6 weeks. Notably, trypan blue showed higher inter-operator variability in two of the three sites.`,
+
+  'cho|hek|vero|cell line|chinese hamster|jurkat|primary':
+    `CytoDirect has been validated across a wide range of cell types.\n\n**Established lines (CHO, HEK293, Vero, Jurkat):** Strong performance, well-characterised morphology that DHM reads clearly. CHO-K1 is particularly well-validated — the data from 3 GMP sites is in your Resources.\n\n**Primary T-cells (CD4+, CD8+):** Good performance. Activated cells have elevated refractive index — CytoDirect reads this clearly. r² = 0.991–0.994 vs. trypan blue. The nuance is at low viability (&lt;70%) where confidence intervals widen slightly.\n\n**iPSC-derived cells:** More variable depending on differentiation stage. For these, I'd recommend a loaner validation before committing.\n\nIf you tell me your specific cell line, I can pull the most relevant data for you.`,
+
+  'labx|software|data|export|transfer|wifi':
+    `LabX connects to CytoDirect via Wi-Fi — results transfer automatically after each measurement.\n\nWhat you get in LabX:\n- **Automatic data storage** with full measurement metadata\n- **Audit trail** for every count (operator, timestamp, method version)\n- **SOP enforcement** — users can only run approved methods\n- **Electronic signatures** for result approval\n- **Report generation** in PDF or CSV\n- **User management** with role-based permissions\n\nFor unregulated research, LabX is optional — results display on the CytoDirect screen and can be exported directly. For GMP environments, it's the full data integrity stack in one place.`,
+
+  'cost|price|budget|roi|saving|calculat|afford':
+    `At 20 counts per week, here's the comparison:\n\n**Current method (trypan blue + hemocytometer):**\nReagent + consumable + 15 min operator time ≈ **€14.45 per count**\n\n**CytoDirect:**\nGlass slide + 2 min operator time + instrument amortisation ≈ **€6.80 per count**\n\n**Annual saving:** €7,650\n**Instrument payback:** ~26 months\n\nThe operator time piece is often underestimated — 15 min per count × 20 counts per week = over 250 hours per year spent counting cells.\n\nI have a detailed cost calculator in your Resources. If you tell me your specific throughput, I can give you numbers tailored to your lab.`,
+
+  'portable|portab|mobile|hood|bsc|biosafety|cabinet|battery':
+    `This is one of CytoDirect's core design advantages — it goes where your sample is.\n\n**Battery-powered:** No need for a power cable running to a power outlet under the hood.\n\n**Wi-Fi connected:** Results transfer automatically — no docking required.\n\n**Sterilisable:** The surface can be sprayed with standard disinfectants, enabling safe use inside a biosafety cabinet.\n\n**Small footprint:** Fits comfortably under a standard Class II hood.\n\nMost labs with benchtop counters have to transfer samples from the BSC to the counter — that's a contamination risk and a source of variability at the counting step. CytoDirect removes that transfer entirely. You count at the point of preparation.`,
+
+  'vi-cell|vicell|chemometec|nucleocounter|competitor|vs|versus|compar|alternative|logos|luna':
+    `Honest comparison with the main alternatives:\n\n**vs. Vi-CELL XR (Beckman Coulter):** Trypan blue based, 5–10 min per run, benchtop-fixed. CytoDirect: stain-free, 15 seconds, portable. Vi-CELL excels at high-volume throughput in a single location.\n\n**vs. NucleoCounter (ChemoMetec):** Fluorescent dye based, cassette system, good throughput. CytoDirect's advantage: no reagents, no sample prep, portable.\n\n**vs. LUNA-II (Logos Biosystems):** AO/PI staining, dual-fluorescence. Good accuracy but requires reagents and prep time.\n\n**vs. manual hemocytometer:** CytoDirect eliminates operator variability, reduces time from 15–20 min to 15 seconds, produces an auditable electronic record.\n\nCytoDirect works best as a complement to benchtop instruments — many labs run CytoDirect at the BSC for routine checks and their benchtop for reference measurements during validation.`,
+
+  'qa|quality|meeting|present|convince|manager|pi|head':
+    `Let me help you build the case for different audiences.\n\n**For a QA manager**, the four questions they'll ask:\n1. Is data tamper-proof? → LabX audit trail, electronic and immutable\n2. Can operators deviate? → No, method lockdown prevents it\n3. How do we qualify the instrument? → Performance Verification Kit, standard protocol\n4. What's our validation strategy? → Parallel validation, 30–50 runs, full protocol available\n\n**For a PI or department head**, simpler framing: what changes, and is the data trustworthy? You eliminate 15+ minutes of prep per count, get an auditable electronic record, and have correlation data from three GMP sites.\n\n**For procurement**, total cost of ownership vs. reagent costs + operator time — the numbers are in your Resources.\n\nWant me to help structure a specific brief for any of these audiences?`,
+
+  'grant|funding|committee|academic|justify':
+    `For a grant committee, the strongest argument is scientific justification plus cost efficiency:\n\n**Scientific:** Stain-free counting eliminates cytotoxicity bias (trypan blue affects activated primary cells) and reduces inter-operator variability. More reliable data, more reproducible results.\n\n**Cost:** Consumables (€3.20/measurement) vs. trypan blue reagents + disposable hemocytometers + operator time. At 10 counts/week, annual consumable savings typically exceed €3,500.\n\n**Unique capability:** No alternative combines stain-free viability measurement with portability for use at the cell preparation point.\n\nI have a grant justification template in your Resources — formatted for committee review, ready for you to customise with your specific throughput numbers.`,
+
+  'loaner|try|pilot|trial|evaluat|test|before|sample|demo':
+    `Yes — we can arrange a loaner unit for 2 weeks at no cost and no commitment.\n\nYou run your own samples alongside your current method. You come out with your own validation data — not marketing numbers. That's a much stronger position for any internal decision or grant committee.\n\nFor the loaner, I'd need:\n- Your lab's delivery address\n- An available 2-week window\n- Your primary cell type (so I can prepare the right protocol)\n\nIf the data doesn't convince you, you return the unit and I'll tell you honestly whether CytoDirect is the right fit for your work.\n\nWant me to connect you with a specialist to arrange this?`,
+
+  'dhm|holograph|refractive|microscopy|technology|how it works|how does':
+    `CytoDirect uses digital holographic microscopy (DHM) paired with machine learning.\n\n**How DHM works:** A coherent laser illuminates the cell sample. The light scattered from cells and the surrounding medium creates an interference pattern — a digital hologram. CytoDirect records this hologram and the software reconstructs a 3D optical map of the sample.\n\n**What it measures:** Each cell's refractive index — a physical property that reflects the cell's internal composition. Live cells maintain their cytoplasmic protein content and structural integrity, giving them a characteristic refractive index. Dead cells undergo structural changes that shift this signature measurably.\n\n**The ML layer:** The algorithm is trained on millions of cell images to classify live vs. dead cells based on their holographic signature. It also measures cell size distribution in the same pass.\n\n**Result in 15 seconds:** Cell density, viability percentage, and size distribution — all from the same 15-second measurement, with no sample preparation.`,
+
+  'slide|consumable|glass|20|volume|sample':
+    `Single-use glass slides, 20 µL volume.\n\nDesigned specifically for CytoDirect's extra-large 31.2 mm² detection area — 30 times larger than a standard hemocytometer. More cells measured per count means much stronger statistical significance, especially from heterogeneous or difficult samples.\n\n**Available in:** Boxes of 25 slides. Packs of 10, 20, 50, or 100 boxes.\n**Cost:** ~€3.20 per measurement.\n\nSingle-use by design — no cross-contamination between samples, no cleaning step between counts. Load, measure, discard in 20 seconds.`,
+
+  'connect|human|person|talk|sales|specialist|meeting|book|demo|appointment':
+    `Of course — I can connect you with a CytoDirect specialist at Mettler Toledo for a direct conversation.\n\nI'll hand off everything from our conversation — your role, your specific questions, your cell line context — so you don't have to repeat yourself.\n\nYou can request:\n- A **30-minute call** with a technical specialist\n- A **lab demo** where a specialist brings CytoDirect to your facility\n- A **2-week loaner unit** for hands-on validation\n\nShall I arrange one of these?`,
+
+  'default':
+    `That's a great question. Let me make sure I give you the most useful answer.\n\nCytoDirect is designed to integrate into your existing workflow rather than replace it. The most impactful change most researchers notice isn't the technology itself — it's that the counting step stops being something they think about.\n\nCould you tell me a bit more about your specific situation? What does your current cell counting workflow look like, and what's the primary frustration you're trying to solve? That helps me give you a much more relevant answer rather than a general one.`
+};
+
+function getResponse(q) {
+  const l = q.toLowerCase();
+  for (const [pattern, response] of Object.entries(BRAIN)) {
+    if (pattern === 'default') continue;
+    if (pattern.split('|').some(p => new RegExp(p.trim(), 'i').test(l))) {
+      return response;
+    }
+  }
+  return BRAIN['default'];
+}
+
+function getSuggestions(q, role) {
+  const l = (q || '').toLowerCase();
+  // Role-based initial suggestions
+  if (!q) {
+    const roleQ = {
+      biopharma: ['Does LabX support 21 CFR Part 11?', 'How does method lockdown work?', 'What\'s the CHO validation data?'],
+      researcher: ['How does stain-free viability work?', 'What cell lines are validated?', 'Can I use it under the biosafety hood?'],
+      labmanager: ['How does it reduce operator variability?', 'What training is required?', 'How does LabX integration work?'],
+      procurement: ['What\'s the total cost of ownership?', 'How does CytoDirect compare to Vi-CELL?', 'What are the consumable costs?'],
+      academic: ['Can I test it before committing?', 'Help me build a grant justification', 'Does it work for primary T-cells?'],
+      cro: ['What cell lines are validated?', 'How does it compare to NucleoCounter?', 'What\'s the throughput capacity?'],
+    };
+    return roleQ[role] || roleQ['researcher'];
+  }
+  if (/gmp|cfr|compliance|audit/.test(l)) return ['How does method lockdown work?', 'What does the validation timeline look like?', 'Help me prepare for a QA review'];
+  if (/trypan|stain/.test(l)) return ['What correlation data do you have?', 'How long does parallel validation take?', 'Can I use it under the biosafety hood?'];
+  if (/t.cell|primary|lymph/.test(l)) return ['What about donor variability?', 'How do you handle early apoptosis?', 'Can I request a loaner unit?'];
+  if (/cost|price|grant|budget/.test(l)) return ['Can you build a cost comparison?', 'What are the consumable costs?', 'Help me build a grant case'];
+  if (/connect|human|specialist|book|demo/.test(l)) return ['Book a lab demo', 'Request a loaner unit', 'Speak to a technical specialist'];
+  return ['How does DHM technology work?', 'What cell lines are supported?', 'How does it compare to Vi-CELL?'];
+}
+
+// ── MESSAGES ──────────────────────────────────────────────────────
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function nowTime() {
+  return new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+}
+
+function addMsg(role, text, time) {
+  const msgs = document.getElementById('msgs');
+  const group = document.createElement('div');
+  group.className = `msg-group ${role === 'user' ? 'user' : ''} fade-up`;
+
+  if (role !== 'user') {
+    const meta = document.createElement('div');
+    meta.className = 'msg-meta eva';
+    meta.textContent = 'Eva · AI specialist';
+    group.appendChild(meta);
+  }
+
+  const bubble = document.createElement('div');
+  bubble.className = `bubble ${role === 'user' ? 'user' : 'eva'}`;
+  bubble.innerHTML = text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+  group.appendChild(bubble);
+
+  if (time) {
+    const t = document.createElement('div');
+    t.className = `bubble-time ${role !== 'user' ? 'eva' : ''}`;
+    t.textContent = time;
+    group.appendChild(t);
+  }
+
+  msgs.appendChild(group);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+  const msgs = document.getElementById('msgs');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg-group fade-up'; wrap.id = 'typing';
+  const meta = document.createElement('div');
+  meta.className = 'msg-meta eva'; meta.textContent = 'Eva is thinking…';
+  wrap.appendChild(meta);
+  const b = document.createElement('div');
+  b.className = 'typing-bubble';
+  b.innerHTML = '<div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div>';
+  wrap.appendChild(b);
+  msgs.appendChild(wrap);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+function setQR(questions) {
+  const area = document.getElementById('qrArea');
+  area.innerHTML = '<div class="qr-label">Suggested questions</div>';
+  questions.slice(0, 3).forEach(q => {
+    const btn = document.createElement('button');
+    btn.className = 'qr-pill';
+    btn.innerHTML = `<span>${q}</span><span class="qr-arr">›</span>`;
+    btn.onclick = () => sendQuick(q);
+    area.appendChild(btn);
+  });
+}
+
+async function sendMsg() {
+  const field = document.getElementById('msgField');
+  const text = field.value.trim();
+  if (!text || busy) return;
+  field.value = ''; field.style.height = 'auto';
+  busy = true;
+  document.getElementById('sendBtn').disabled = true;
+  document.getElementById('qrArea').innerHTML = '<div class="qr-label">Suggested questions</div>';
+  addMsg('user', text, nowTime());
+  showTab('conv');
+
+  await wait(Math.min(Math.max(text.split(' ').length * 80, 600), 1200));
+  showTyping();
+  const response = getResponse(text);
+  await wait(Math.min(Math.max(response.length * 6, 800), 2400));
+  removeTyping();
+  addMsg('eva', response, nowTime());
+  setQR(getSuggestions(text, userRole));
+
+  // Check if handoff is appropriate
+  if (/connect|human|person|talk|specialist|book|demo|sales/.test(text.toLowerCase())) {
+    showHandoffBar();
+  }
+
+  busy = false;
+  document.getElementById('sendBtn').disabled = false;
+}
+
+function sendQuick(q) {
+  document.getElementById('msgField').value = q;
+  sendMsg();
+}
+
+function showHandoffBar() {
+  if (document.getElementById('handoffBar')) return;
+  const bar = document.createElement('div');
+  bar.id = 'handoffBar';
+  bar.className = 'handoff-bar';
+  bar.innerHTML = `<span class="hb-icon">👤</span><span class="hb-text">Eva can connect you with a real specialist for demos, pricing, or complex evaluations.</span><button class="hb-action" onclick="requestSpecialist()">Connect →</button>`;
+  const convPane = document.getElementById('pane-conv');
+  const input = convPane.querySelector('.input-row');
+  convPane.insertBefore(bar, input);
+}
+
+function requestSpecialist() {
+  closeHandoffBar();
+  openModal({
+    title: 'Connect with a specialist',
+    body: `<h4>Eva will hand you off</h4><p>Eva has prepared a summary of your conversation — your role, your specific questions, and the context of your evaluation — so you won't have to repeat yourself.</p><h4>What you can request</h4><ul><li><strong>Technical call (30 min)</strong> — deep-dive on your specific workflow and cell lines</li><li><strong>Lab demo</strong> — a specialist brings CytoDirect to your facility</li><li><strong>2-week loaner</strong> — validate with your own samples, no commitment</li></ul><p>A member of the Mettler Toledo CytoDirect team will contact you within one business day.</p>`,
+    acts: [{ text: 'Request a specialist', primary: true, fn: () => { closeModal(); addMsg('eva', `I've flagged your request. A CytoDirect specialist will reach out within one business day. I've included a summary of our conversation so you won't need to repeat anything.\n\nIn the meantime, I'm still here if you have more questions.`, nowTime()); } }, { text: 'Maybe later', primary: false, fn: closeModal }]
+  });
+}
+
+function closeHandoffBar() {
+  const bar = document.getElementById('handoffBar');
+  if (bar) bar.remove();
+}
+
+// ── CONVERSATION START ────────────────────────────────────────────
+async function startConversation() {
+  await wait(300);
+
+  const roleGreetings = {
+    biopharma: `I can see you're working in a GMP environment. I've prepared your resources with a focus on 21 CFR Part 11 compliance, method validation, and the LabX integration.\n\nMost BioPharma teams I work with have the same starting question: will the data hold up in a QA review? The short answer is yes — let me show you exactly how.`,
+    researcher: `I know researchers don't have time for long sales conversations, so I'll be direct.\n\nCytoDirect removes the staining step entirely, measures in 15 seconds, and works directly under your biosafety cabinet. I've prepared the application notes and validation data most relevant for your research context.\n\nWhat are you working on? That helps me surface what's actually useful.`,
+    labmanager: `Lab managers usually care about two things: consistency across the team and time efficiency. CytoDirect addresses both — the ML algorithm delivers the same result regardless of who runs the count, and 15 seconds versus 15 minutes adds up fast.\n\nI've prepared resources focused on throughput, operator training (or rather, the lack of it), and team-level implementation.`,
+    procurement: `I appreciate that you need numbers, not enthusiasm. I've prepared a full cost-of-ownership comparison in your Resources — current method (trypan blue + operator time) versus CytoDirect.\n\nAt most throughputs, payback is under 24 months when you account for reagent costs and operator time. Let me know your current volumes and I can make it specific to your lab.`,
+    academic: `Academic budgets are real, and I respect that. Before we talk about anything else — we have a 2-week loaner programme. No cost, no commitment. You run your own samples, collect your own data, and then decide.\n\nThat's also the strongest possible case to make to a grant committee — your own validation results, not our marketing.\n\nWhat cell lines are you working with?`,
+    cro: `CRO environments need flexibility across multiple cell lines and clients. I've prepared resources covering the validated cell types and the throughput options.\n\nThe key advantage for CRO settings: CytoDirect is portable and shareable across multiple benches and teams, and LabX keeps each client's data completely separate with individual audit trails.\n\nWhat's your primary cell counting context right now?`,
+  };
+
+  const text = roleGreetings[userRole] || roleGreetings['researcher'];
+  addMsg('eva', `Hi ${userName} — I'm Eva, your CytoDirect AI specialist. I'm trained on all the product material, application notes, and clinical data, so feel free to ask me anything.\n\n${text}`, nowTime());
+  setQR(getSuggestions(null, userRole));
+}
+
+// ── RESOURCES ─────────────────────────────────────────────────────
+const RESOURCES = {
+  biopharma: [
+    { id: 'checklist', icon: 'check', title: '21 CFR Part 11 compliance checklist', sub: 'Filled in for CytoDirect + LabX · 2 pages', badge: 'GMP', badgeType: 'badge-blue', modal: { title: '21 CFR Part 11 compliance checklist', body: `<h4>Access controls</h4><ul><li>User authentication required before any measurement</li><li>Role-based permissions: administrator, analyst, reviewer</li><li>Method lockdown — approved methods read-only during execution</li></ul><h4>Audit trail</h4><ul><li>Every measurement logged: user ID, timestamp, method version, result</li><li>Tamper-evident — cannot be edited or deleted</li><li>Export as PDF or CSV for regulatory submission</li></ul><h4>Electronic signatures</h4><ul><li>21 CFR Part 11 compliant e-signatures for result approval</li><li>Signature manifest: name, date, meaning</li></ul><h4>Method integrity</h4><ul><li>Version-controlled methods with full change history</li><li>Any modification triggers new approval workflow</li></ul>`, acts: [{ text: 'Ask Eva about this', primary: true }, { text: 'Save to resources', primary: false }] } },
+    { id: 'lockdown', icon: 'lock', title: 'Method lockdown explainer', sub: 'How operator permissions work in LabX', badge: 'New', badgeType: 'badge-green', modal: { title: 'Method lockdown in LabX', body: `<h4>How it works</h4><p>A LabX method defines all CytoDirect measurement parameters. Once approved, it becomes locked for operators.</p><h4>Locked settings</h4><ul><li>Measurement duration, cell size gates</li><li>Viability algorithm and data export destination</li><li>Required metadata fields</li></ul><h4>Operator can fill in</h4><ul><li>Sample ID, experiment name, notes</li></ul><h4>Version control</h4><p>Any change requires a new version with a new approval record. Nothing is overwritten.</p>`, acts: [{ text: 'Ask Eva about this', primary: true }, { text: 'Share with QA team', primary: false }] } },
+    { id: 'cho', icon: 'data', title: 'CHO validation data · 3 GMP sites', sub: 'Correlation with trypan blue · ±2% across all runs', badge: null, badgeType: '', modal: { title: 'CHO validation data', body: `<h4>Three independent GMP sites</h4><ul><li><strong>Site A (EU, 45 counts/wk):</strong> r² = 0.997, mean bias +0.8%</li><li><strong>Site B (US, 28 counts/wk):</strong> r² = 0.994, mean bias −1.2%</li><li><strong>Site C (EU, 60 counts/wk):</strong> r² = 0.996, mean bias +1.4%</li></ul><h4>Conclusion</h4><p>All three sites accepted CytoDirect within their ±3% acceptance criteria within 6 weeks of first measurement.</p>`, acts: [{ text: 'Ask Eva about validation', primary: true }, { text: 'Use in QA presentation', primary: false }] } },
+    { id: 'cost', icon: 'calc', title: 'Cost per sample calculator', sub: 'Includes reagent savings + operator time', badge: null, badgeType: '', modal: { title: 'Cost comparison — CHO workflow', body: `<h4>Current method (trypan blue)</h4><ul><li>Trypan blue reagent: €0.80</li><li>Disposable hemocytometer: €2.40</li><li>Operator time (15 min @ €45/hr): €11.25</li><li><strong>Total: €14.45 per count</strong></li></ul><h4>CytoDirect</h4><ul><li>Glass slide: €3.20</li><li>Operator time (2 min @ €45/hr): €1.50</li><li>Instrument amortisation (5yr): €2.10</li><li><strong>Total: €6.80 per count</strong></li></ul><h4>At 20 counts/week</h4><p>Annual saving: <strong>€7,650</strong> · Payback: ~26 months</p>`, acts: [{ text: 'Ask Eva to customise this', primary: true }, { text: 'Add to PI presentation', primary: false }] } },
+  ],
+  researcher: [
+    { id: 'overview', icon: 'play', title: 'How CytoDirect works · 2 min overview', sub: 'Stain-free counting explained', badge: 'Start here', badgeType: 'badge-eva', modal: { title: 'CytoDirect technology overview', body: `<h4>Digital holographic microscopy</h4><p>CytoDirect illuminates cells with a coherent laser. The resulting interference pattern (hologram) encodes 3D optical information about each cell.</p><h4>Machine learning classification</h4><p>The ML algorithm classifies live vs. dead cells based on their refractive index — a physical property that changes measurably as cells die.</p><h4>Result in 15 seconds</h4><p>Cell density, viability percentage, and size distribution from a single 20 µL sample. No preparation, no staining, no waiting.</p>`, acts: [{ text: 'Ask Eva more questions', primary: true }, { text: 'See cell line data', primary: false }] } },
+    { id: 'appnote', icon: 'doc', title: 'Application note · stain-free viability', sub: 'Technology and workflow explained', badge: null, badgeType: '', modal: { title: 'Stain-free viability application note', body: `<h4>Why stain-free matters</h4><p>Trypan blue is cytotoxic to activated primary cells at extended exposure. For assays where you count and then use the same sample downstream, CytoDirect preserves sample integrity entirely.</p><h4>Workflow comparison</h4><ul><li><strong>Trypan blue:</strong> Prepare stain → mix → wait → load → count manually → 15–20 min</li><li><strong>CytoDirect:</strong> Load 20 µL → measure → result → 15 seconds</li></ul><h4>Validated cell types</h4><p>CHO, HEK293, Vero, Jurkat, primary T-cells (CD4+, CD8+), NK cells, mixed PBMC preparations.</p>`, acts: [{ text: 'Ask Eva about my cell type', primary: true }, { text: 'Save this note', primary: false }] } },
+    { id: 'cho', icon: 'data', title: 'Validation data · multiple cell lines', sub: 'Correlation vs. trypan blue', badge: null, badgeType: '', modal: { title: 'Cell line validation data', body: `<h4>CHO-K1 (3 GMP sites)</h4><ul><li>r² = 0.994–0.997, mean bias within ±1.4%</li></ul><h4>Primary T-cells (CD4+, CD8+)</h4><ul><li>Activated: r² = 0.994, mean bias +2.1%</li><li>Resting: r² = 0.991, mean bias +1.8%</li><li>Donor variability: CytoDirect CV 2.3% vs. trypan blue 4.1%</li></ul><h4>HEK293 and Vero</h4><ul><li>Strong performance, consistent morphology</li></ul>`, acts: [{ text: 'Ask about my specific cell line', primary: true }, { text: 'Request a loaner unit', primary: false }] } },
+    { id: 'loaner', icon: 'gift', title: 'Request a 2-week loaner unit', sub: 'Validate with your own samples · no commitment', badge: 'Free', badgeType: 'badge-green', modal: { title: '2-week loaner programme', body: `<h4>How it works</h4><p>We ship a fully configured CytoDirect unit to your lab for 2 weeks at no cost.</p><h4>What you get</h4><ul><li>CytoDirect unit + slides for ~50 measurements</li><li>Eva available throughout for questions</li><li>A structured validation protocol for your cell type</li><li>Your own validation data at the end</li></ul><h4>No obligation</h4><p>If the data doesn't convince you, you return the unit. Eva will tell you honestly if CytoDirect is the right fit.</p>`, acts: [{ text: 'Request the loaner unit', primary: true }, { text: 'Ask Eva first', primary: false }] } },
+  ],
+  labmanager: [
+    { id: 'variability', icon: 'check', title: 'Eliminating inter-operator variability', sub: 'How ML standardises results across your team', badge: 'Key benefit', badgeType: 'badge-blue', modal: { title: 'Operator variability — the data', body: `<h4>The problem</h4><p>Manual trypan blue counting introduces 4–8% coefficient of variation between operators, depending on experience and technique. This compounds across teams.</p><h4>CytoDirect's approach</h4><p>The ML algorithm delivers the same classification regardless of who loads the slide. Operator CV: 2.3%. Trypan blue CV: 4.1% (tested across 8 individuals).</p><h4>What this means for your lab</h4><p>One standard. Every operator. Every time. QA teams sign off faster on processes that don't depend on individual technique.</p>`, acts: [{ text: 'Ask Eva more', primary: true }, { text: 'See GMP validation data', primary: false }] } },
+    { id: 'training', icon: 'doc', title: 'Training requirements · zero', sub: 'On-screen guidance for every operator', badge: null, badgeType: '', modal: { title: 'Operator training', body: `<h4>No dedicated training required</h4><p>CytoDirect features on-screen step-by-step guidance for every measurement. Any operator can run a count from day one.</p><h4>Method standardisation</h4><p>LabX method lockdown ensures every operator follows the approved protocol — automatically. No training needed for compliance.</p><h4>Troubleshooting built in</h4><p>CytoDirect includes built-in troubleshooting guidance that flags potential issues (aggregates, low cell density) and guides the operator through corrective steps.</p>`, acts: [{ text: 'Ask Eva about LabX setup', primary: true }, { text: 'See method lockdown details', primary: false }] } },
+    { id: 'cost', icon: 'calc', title: 'Cost and throughput overview', sub: 'ROI calculation for lab management', badge: null, badgeType: '', modal: { title: 'Lab ROI overview', body: `<h4>Throughput comparison</h4><ul><li><strong>Trypan blue:</strong> 3–4 counts per hour per operator</li><li><strong>CytoDirect:</strong> 15+ counts per hour per operator</li></ul><h4>Annual cost (20 counts/week)</h4><ul><li>Reagent + consumable savings: €5,200</li><li>Operator time saved: ~250 hours</li><li>Total saving: €7,650/year</li></ul>`, acts: [{ text: 'Ask Eva to customise for my lab', primary: true }, { text: 'Request a proposal', primary: false }] } },
+  ],
+  procurement: [
+    { id: 'tco', icon: 'calc', title: 'Total cost of ownership analysis', sub: 'Instrument + consumables + operator time', badge: 'Key document', badgeType: 'badge-blue', modal: { title: 'Total cost of ownership', body: `<h4>Current method (trypan blue)</h4><ul><li>Trypan blue reagent: €0.80/count</li><li>Disposable hemocytometer: €2.40/count</li><li>Operator time (15 min @ €45/hr): €11.25/count</li><li><strong>Total: €14.45/count</strong></li></ul><h4>CytoDirect</h4><ul><li>Glass slide: €3.20/count</li><li>Operator time (2 min): €1.50/count</li><li>Instrument amortisation: €2.10/count</li><li><strong>Total: €6.80/count</strong></li></ul><h4>At 20 counts/week</h4><p>Annual saving: <strong>€7,650</strong> · Payback: ~26 months</p>`, acts: [{ text: 'Ask Eva to customise', primary: true }, { text: 'Request a formal quote', primary: false }] } },
+    { id: 'compare', icon: 'data', title: 'Competitor comparison', sub: 'Vi-CELL, NucleoCounter, LUNA vs. CytoDirect', badge: null, badgeType: '', modal: { title: 'Competitor comparison', body: `<h4>vs. Vi-CELL XR (Beckman)</h4><ul><li>Vi-CELL: trypan blue, 5–10 min, benchtop-fixed</li><li>CytoDirect: stain-free, 15 sec, portable</li></ul><h4>vs. NucleoCounter (ChemoMetec)</h4><ul><li>NucleoCounter: fluorescent dyes, cassette system</li><li>CytoDirect: no reagents, no sample prep</li></ul><h4>vs. LUNA-II (Logos)</h4><ul><li>LUNA-II: AO/PI staining, dual-fluorescence</li><li>CytoDirect: stain-free, portable, GMP-ready</li></ul>`, acts: [{ text: 'Ask Eva more about this', primary: true }, { text: 'Request a formal comparison', primary: false }] } },
+  ],
+  academic: [
+    { id: 'loaner', icon: 'gift', title: 'Request a 2-week loaner unit', sub: 'Validate with your own samples · no commitment', badge: 'Free', badgeType: 'badge-green', modal: { title: '2-week loaner programme', body: `<h4>How it works</h4><p>We ship a fully configured CytoDirect unit to your lab for 2 weeks at no cost and no commitment.</p><h4>Why this matters for your grant committee</h4><p>You come out with your own validation data — not our marketing numbers. That's a much stronger position for any committee.</p><h4>What you get</h4><ul><li>CytoDirect unit + slides for ~50 measurements</li><li>Eva available for questions throughout</li><li>Validation protocol for your specific cell type</li></ul>`, acts: [{ text: 'Request the loaner unit', primary: true }, { text: 'Ask Eva first', primary: false }] } },
+    { id: 'grant', icon: 'doc', title: 'Grant justification template', sub: 'Formatted for committee · ready to customise', badge: 'New', badgeType: 'badge-eva', modal: { title: 'Grant justification template', body: `<h4>Scientific justification</h4><p>Trypan blue exclusion introduces cytotoxicity bias and inter-operator variability. CytoDirect's stain-free DHM eliminates both, enabling more reliable and reproducible viability data.</p><h4>Cost justification</h4><p>At 10 counts/week: consumable cost (€3.20/measurement) vs. trypan blue reagents + disposable hemocytometer + operator time. Annual saving: €3,800+.</p><h4>Unique capability</h4><p>No alternative combines stain-free viability measurement with portability for use at the cell preparation point.</p>`, acts: [{ text: 'Ask Eva to customise this', primary: true }, { text: 'See pricing overview', primary: false }] } },
+    { id: 'tcell', icon: 'data', title: 'Primary T-cell validation data', sub: 'CD4+, CD8+ · activated vs. resting', badge: null, badgeType: '', modal: { title: 'T-cell validation data', body: `<h4>Activated CD4+ and CD8+ T-cells</h4><p>r² = 0.994, mean bias +2.1%. Strong performance — activated cells have elevated refractive index that DHM reads clearly.</p><h4>Resting T-cells</h4><p>r² = 0.991, mean bias +1.8%. Slight widening of confidence intervals at low viability (&lt;70%). Excellent at routine culture viability (&gt;85%).</p><h4>Donor variability</h4><p>CytoDirect CV: <strong>2.3%</strong> vs. trypan blue: 4.1% — across 8 donors.</p>`, acts: [{ text: 'Ask Eva about my cell line', primary: true }, { text: 'Request the loaner', primary: false }] } },
+    { id: 'pricing', icon: 'calc', title: 'Academic pricing overview', sub: 'Instrument + consumables · grant-friendly format', badge: null, badgeType: '', modal: { title: 'Academic pricing', body: `<h4>Consumables</h4><ul><li>Glass slides: ~€3.20 per measurement</li><li>Cleaning swabs: €45 per set</li><li>Performance Verification Kit: €180/year</li></ul><h4>At 10 counts/week</h4><p>Annual consumable cost: ~€1,660 vs. trypan blue workflow: €1,660 in reagents + ~130 hours operator time.</p><h4>Grant notes</h4><p>Consumables qualify as recurring lab supplies. Instrument can be capital equipment or leased as operating cost.</p>`, acts: [{ text: 'Ask Eva for a formal quote', primary: true }, { text: 'Add to grant template', primary: false }] } },
+  ],
+  cro: [
+    { id: 'appnote', icon: 'doc', title: 'Application note · stain-free viability', sub: 'Technology and workflow explained', badge: 'Start here', badgeType: 'badge-eva', modal: { title: 'CytoDirect for CRO environments', body: `<h4>Multi-client flexibility</h4><p>CytoDirect's LabX integration keeps each client's data completely separate with individual audit trails, user permissions, and report generation.</p><h4>Cell line flexibility</h4><p>Validated across CHO, HEK293, Vero, Jurkat, primary T-cells, NK cells, and mixed PBMC preparations. Eva can pull specific data for any cell line you're running.</p><h4>Throughput</h4><p>15 seconds per measurement. Shareable across multiple benches and researchers. No cleaning between samples — slide-based system.</p>`, acts: [{ text: 'Ask Eva about specific cell lines', primary: true }, { text: 'See competitor comparison', primary: false }] } },
+    { id: 'compare', icon: 'data', title: 'Competitor comparison', sub: 'Vi-CELL, NucleoCounter, LUNA vs. CytoDirect', badge: null, badgeType: '', modal: { title: 'Competitor comparison', body: `<h4>vs. Vi-CELL XR (Beckman)</h4><p>Vi-CELL: trypan blue, 5–10 min/run, benchtop-fixed. CytoDirect: stain-free, 15 sec, portable.</p><h4>vs. NucleoCounter (ChemoMetec)</h4><p>NucleoCounter: fluorescent cassette system. CytoDirect: no reagents, no sample prep, glass slides.</p><h4>CRO advantage</h4><p>For CRO settings, CytoDirect's portability and no-reagent workflow reduces setup time and eliminates reagent inventory management across client projects.</p>`, acts: [{ text: 'Ask Eva more', primary: true }, { text: 'Request a formal quote', primary: false }] } },
+  ],
+};
+
+function buildResources() {
+  const items = RESOURCES[userRole] || RESOURCES['researcher'];
+  const ICONS = {
+    check: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="4" stroke="#0066cc" stroke-width="1.5"/><path d="M6 10l3 3 5-6" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+    lock: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="5" y="10" width="10" height="8" rx="2" stroke="#0066cc" stroke-width="1.5"/><path d="M7 10V7.5a3 3 0 016 0V10" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+    data: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l3 7h6l-5 4 2 7-6-4-6 4 2-7L1 9h6z" stroke="#0066cc" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
+    calc: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="12" rx="2" stroke="#0066cc" stroke-width="1.5"/><path d="M7 10h6M10 7v6" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+    doc: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="2" width="12" height="16" rx="2" stroke="#0066cc" stroke-width="1.5"/><path d="M7 8h6M7 11h6M7 14h4" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+    play: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#0066cc" stroke-width="1.5"/><path d="M8 7l6 3-6 3V7z" fill="#0066cc"/></svg>`,
+    gift: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="9" width="16" height="9" rx="2" stroke="#059669" stroke-width="1.5"/><path d="M2 9h16v3H2z" stroke="#059669" stroke-width="1.5"/><path d="M10 9V18M10 6c0-2 1.5-4 3-4s2 2 0 3H10zM10 6c0-2-1.5-4-3-4s-2 2 0 3h3z" stroke="#059669" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+  };
+
+  const featured = items.filter(r => r.badge);
+  const rest = items.filter(r => !r.badge);
+  let html = '';
+
+  if (featured.length) {
+    html += `<div class="res-sec"><div class="res-sec-lbl">Prepared for you</div>`;
+    featured.forEach(r => {
+      html += `<div class="res-card" onclick="openModal('${r.id}')">
+        <div class="res-icon">${ICONS[r.icon] || ICONS.doc}</div>
+        <div class="res-body"><div class="res-title">${r.title}</div><div class="res-sub">${r.sub}</div></div>
+        ${r.badge ? `<div class="res-badge ${r.badgeType}">${r.badge}</div>` : '<div class="res-arr">›</div>'}
+      </div>`;
+    });
+    html += `</div>`;
+  }
+  if (rest.length) {
+    html += `<div class="res-sec"><div class="res-sec-lbl">Reference documents</div>`;
+    rest.forEach(r => {
+      html += `<div class="res-card" onclick="openModal('${r.id}')">
+        <div class="res-icon">${ICONS[r.icon] || ICONS.doc}</div>
+        <div class="res-body"><div class="res-title">${r.title}</div><div class="res-sub">${r.sub}</div></div>
+        <div class="res-arr">›</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+  document.getElementById('resScroll').innerHTML = html;
+}
+
+function openModal(id) {
+  const role = userRole || 'researcher';
+  const items = RESOURCES[role] || RESOURCES['researcher'];
+  const res = items.find(r => r.id === id);
+  if (!res) return;
+  document.getElementById('modalTitle').textContent = res.modal.title;
+  document.getElementById('modalBody').innerHTML = res.modal.body;
+  const actsEl = document.getElementById('modalActs');
+  actsEl.innerHTML = '';
+  res.modal.acts.forEach(a => {
+    const btn = document.createElement('button');
+    btn.className = `m-btn ${a.primary ? 'm-primary' : 'm-outline'}`;
+    btn.textContent = a.text;
+    btn.onclick = () => {
+      closeModal();
+      if (a.fn) { a.fn(); return; }
+      if (a.text.toLowerCase().includes('ask')) {
+        showTab('conv');
+        setTimeout(() => sendQuick(`Tell me more about ${res.title.toLowerCase()}`), 200);
+      }
+    };
+    actsEl.appendChild(btn);
+  });
+  document.getElementById('modalBd').classList.add('on');
+}
+
+function openModal(id) {
+  const role = userRole || 'researcher';
+  const allItems = Object.values(RESOURCES).flat();
+  const roleItems = RESOURCES[role] || RESOURCES['researcher'];
+  const res = roleItems.find(r => r.id === id) || allItems.find(r => r.id === id);
+  if (!res) return;
+  document.getElementById('modalTitle').textContent = res.modal.title;
+  document.getElementById('modalBody').innerHTML = res.modal.body;
+  const actsEl = document.getElementById('modalActs');
+  actsEl.innerHTML = '';
+  res.modal.acts.forEach(a => {
+    const btn = document.createElement('button');
+    btn.className = `m-btn ${a.primary ? 'm-primary' : 'm-outline'}`;
+    btn.textContent = a.text;
+    btn.onclick = () => {
+      closeModal();
+      if (a.fn) { a.fn(); return; }
+      if (a.text.toLowerCase().includes('ask')) {
+        showTab('conv');
+        setTimeout(() => sendQuick(`Tell me more about ${res.title.toLowerCase()}`), 200);
+      }
+    };
+    actsEl.appendChild(btn);
+  });
+  document.getElementById('modalBd').classList.add('on');
+}
+
+function closeModal() { document.getElementById('modalBd').classList.remove('on'); }
+
+function showHandoff() { requestSpecialist(); }
+
+// ── TABS ──────────────────────────────────────────────────────────
+function showTab(id) {
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('pane-' + id).classList.add('on');
+  ['conv', 'res', 'about'].forEach((t, i) => {
+    if (t === id) document.querySelectorAll('.tab')[i].classList.add('on');
+  });
+}
+
+// ── RESET ─────────────────────────────────────────────────────────
+function resetApp() {
+  if (!confirm('Start a new session?')) return;
+  localStorage.removeItem('eva_name');
+  localStorage.removeItem('eva_role');
+  localStorage.removeItem('eva_role_label');
+  location.reload();
+}
+
+// ── BOOT ──────────────────────────────────────────────────────────
+(function boot() {
+  const storedName = localStorage.getItem('eva_name');
+  if (storedName) {
+    userName = storedName;
+    userRole = localStorage.getItem('eva_role') || 'researcher';
+    userRoleLabel = localStorage.getItem('eva_role_label') || 'Researcher';
+    document.getElementById('welcome').style.display = 'none';
+    document.getElementById('app').classList.add('show');
+    initApp();
+  }
+
+  // Enable start button on Enter in name field
+  document.getElementById('nameInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && userRole) startApp();
+  });
+})();
+</script>
+</body>
+</html>
