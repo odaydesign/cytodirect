@@ -480,7 +480,130 @@ html, body {
 .fade-up { animation: fadeUp .25s ease; }
 @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
-/* HANDOFF BANNER */
+/* ══ INSTALL OVERLAY ════════════════════════════════════════════ */
+.install-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  background: rgba(10, 22, 40, 0.72);
+}
+.install-overlay.show {
+  display: flex;
+}
+.install-sheet {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 24px 24px 0 0;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  max-height: 92vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  transform: translateY(100%);
+  transition: transform .38s cubic-bezier(.32,1.1,.6,1);
+  will-change: transform;
+}
+.install-sheet.up {
+  transform: translateY(0);
+}
+.install-sheet::-webkit-scrollbar { display: none; }
+
+.is-handle {
+  width: 36px; height: 4px; border-radius: 2px;
+  background: #d1d5db; margin: 12px auto 0;
+}
+.is-top {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex; align-items: center; gap: 14px;
+}
+.is-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: #0a1628; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+.is-title-block {}
+.is-title { font-size: 16px; font-weight: 700; color: #111827; margin-bottom: 2px; }
+.is-subtitle { font-size: 12px; color: #6b7280; }
+.is-skip {
+  margin-left: auto; font-size: 13px; color: #9ca3af;
+  background: none; border: none; cursor: pointer;
+  font-family: 'Inter', sans-serif; padding: 4px 0; flex-shrink: 0;
+}
+.is-steps {
+  padding: 20px 20px 16px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.is-steps-label {
+  font-size: 11px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: #9ca3af; margin-bottom: 12px;
+}
+.is-step {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px; border-radius: 12px;
+  background: #f8f9fc; margin-bottom: 8px;
+  border: 1px solid #e5e7eb;
+}
+.is-step-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #0066cc; color: #fff;
+  font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.is-step-body { flex: 1; }
+.is-step-title { font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 3px; }
+.is-step-desc { font-size: 12px; color: #6b7280; line-height: 1.55; }
+.is-step-visual {
+  margin-top: 10px; background: #fff;
+  border: 1px solid #e5e7eb; border-radius: 8px;
+  padding: 10px 12px; display: flex; align-items: center; gap: 10px;
+}
+.is-step-img {
+  width: 32px; height: 32px; border-radius: 6px;
+  background: #e5e7eb; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.is-step-img-lbl { font-size: 11px; color: #6b7280; line-height: 1.4; }
+
+.is-note {
+  padding: 0 20px 4px;
+  font-size: 12px; color: #9ca3af; text-align: center; line-height: 1.6;
+}
+.is-later {
+  margin: 12px 20px 0;
+  width: calc(100% - 40px); padding: 13px;
+  background: transparent; border: 1.5px solid #d1d5db;
+  border-radius: 10px; color: #6b7280;
+  font-size: 14px; font-weight: 500; font-family: 'Inter', sans-serif;
+  cursor: pointer; display: block;
+}
+
+/* Device-specific content */
+.ios-only { display: none; }
+.android-only { display: none; }
+.desktop-only { display: none; }
+
+/* Arrow indicator at bottom of screen for iOS */
+.is-arrow-hint {
+  margin-top: 10px; padding: 10px 16px;
+  background: #0a1628; border-radius: 10px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: rgba(255,255,255,.8);
+}
+.is-arrow-bounce {
+  animation: bounce 1.5s infinite;
+}
+@keyframes bounce {
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(4px)}
+}
+
+/* ══ HANDOFF BANNER */
 .handoff-bar {
   flex-shrink: 0; padding: 10px 16px;
   background: var(--blue-light); border-top: 1px solid var(--blue-mid);
@@ -649,6 +772,132 @@ html, body {
   </div>
 </div>
 
+<!-- ══ INSTALL OVERLAY ══ -->
+<div class="install-overlay" id="installOverlay">
+  <div class="install-sheet" id="installSheet">
+    <div class="is-handle"></div>
+
+    <div class="is-top">
+      <div class="is-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="14" r="12" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+          <path d="M9 12c0-2.8 2.2-5 5-5s5 2.2 5 5c0 2.7-1.7 5-3.8 5.3V19" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="14" cy="21.5" r="1.2" fill="#fff"/>
+          <circle cx="21" cy="22" r="3.5" fill="#6366f1"/>
+          <text x="21" y="23.5" text-anchor="middle" font-size="5" font-weight="700" fill="#fff" font-family="Inter,sans-serif">AI</text>
+        </svg>
+      </div>
+      <div class="is-title-block">
+        <div class="is-title">Add Eva to your home screen</div>
+        <div class="is-subtitle">CytoDirect AI specialist · always with you</div>
+      </div>
+      <button class="is-skip" onclick="dismissInstall()">Skip</button>
+    </div>
+
+    <!-- iOS STEPS -->
+    <div class="is-steps ios-only">
+      <div class="is-steps-label">3 steps on iPhone or iPad</div>
+
+      <div class="is-step">
+        <div class="is-step-num">1</div>
+        <div class="is-step-body">
+          <div class="is-step-title">Tap the Share button</div>
+          <div class="is-step-desc">At the bottom of Safari, tap the share icon — the box with the arrow pointing up.</div>
+          <div class="is-step-visual">
+            <div class="is-step-img">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="5" y="5" width="8" height="9" rx="1.5" stroke="#6b7280" stroke-width="1.3"/><path d="M9 2v7M6.5 4L9 1.5 11.5 4" stroke="#6b7280" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="is-step-img-lbl">The share icon is in Safari's bottom toolbar, centre</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="is-step">
+        <div class="is-step-num">2</div>
+        <div class="is-step-body">
+          <div class="is-step-title">Tap "Add to Home Screen"</div>
+          <div class="is-step-desc">Scroll down in the share menu until you see "Add to Home Screen" and tap it.</div>
+          <div class="is-step-visual">
+            <div class="is-step-img">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="3" stroke="#6b7280" stroke-width="1.3"/><path d="M9 6v6M6 9h6" stroke="#6b7280" stroke-width="1.3" stroke-linecap="round"/></svg>
+            </div>
+            <div class="is-step-img-lbl">"Add to Home Screen" — scroll down if you don't see it immediately</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="is-step">
+        <div class="is-step-num">3</div>
+        <div class="is-step-body">
+          <div class="is-step-title">Tap "Add" to confirm</div>
+          <div class="is-step-desc">Eva will appear on your home screen instantly. The name will show as <strong>Eva</strong>.</div>
+          <div class="is-step-visual">
+            <div class="is-step-img" style="background:#0a1628;">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="rgba(255,255,255,.3)" stroke-width="1"/><path d="M5 6c0-1.7 1.3-3 3-3s3 1.3 3 3c0 1.6-1 2.9-2.3 3.2V10" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/><circle cx="7.5" cy="11.5" r=".8" fill="#fff"/></svg>
+            </div>
+            <div class="is-step-img-lbl">Eva icon appears on your home screen — tap to open any time</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANDROID STEPS -->
+    <div class="is-steps android-only">
+      <div class="is-steps-label">2 steps on Android</div>
+
+      <div class="is-step">
+        <div class="is-step-num">1</div>
+        <div class="is-step-body">
+          <div class="is-step-title">Tap the menu (⋮) in Chrome</div>
+          <div class="is-step-desc">In Chrome, tap the three dots in the top right corner to open the browser menu.</div>
+          <div class="is-step-visual">
+            <div class="is-step-img">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="4" r="1.3" fill="#6b7280"/><circle cx="9" cy="9" r="1.3" fill="#6b7280"/><circle cx="9" cy="14" r="1.3" fill="#6b7280"/></svg>
+            </div>
+            <div class="is-step-img-lbl">The ⋮ menu is in the top-right of Chrome</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="is-step">
+        <div class="is-step-num">2</div>
+        <div class="is-step-body">
+          <div class="is-step-title">Tap "Add to Home screen"</div>
+          <div class="is-step-desc">Select "Add to Home screen" from the menu, then tap "Add" to confirm. Eva appears on your home screen immediately.</div>
+          <div class="is-step-visual">
+            <div class="is-step-img">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="3" stroke="#6b7280" stroke-width="1.3"/><path d="M9 6v6M6 9h6" stroke="#6b7280" stroke-width="1.3" stroke-linecap="round"/></svg>
+            </div>
+            <div class="is-step-img-lbl">"Add to Home screen" — tap then confirm with "Add"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESKTOP (already installed prompt or just instructions) -->
+    <div class="is-steps desktop-only">
+      <div class="is-steps-label">Install on your computer</div>
+      <div class="is-step">
+        <div class="is-step-num">1</div>
+        <div class="is-step-body">
+          <div class="is-step-title">Look for the install icon</div>
+          <div class="is-step-desc">In Chrome or Edge, look for the install icon (⊕) in the address bar on the right side. Click it to install Eva as a desktop app.</div>
+        </div>
+      </div>
+      <div class="is-step">
+        <div class="is-step-num">2</div>
+        <div class="is-step-body">
+          <div class="is-step-title">For best experience, use your phone</div>
+          <div class="is-step-desc">Eva is designed for mobile. Scan the QR code on your phone for the full experience — it works as a home screen app on iPhone and Android.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="is-note">Eva opens instantly, works offline, and takes up almost no storage.</div>
+    <button class="is-later" onclick="dismissInstall()">Maybe later — continue in browser</button>
+  </div>
+</div>
+
 <script>
 // ── STATE ─────────────────────────────────────────────────────────
 let userName = '';
@@ -656,6 +905,62 @@ let userRole = '';
 let userRoleLabel = '';
 let selectedRoleEl = null;
 let busy = false;
+
+// ── INSTALL OVERLAY ───────────────────────────────────────────────
+function detectDevice() {
+  const ua = navigator.userAgent;
+  const isIOS = /iPhone|iPad|iPod/.test(ua);
+  const isAndroid = /Android/.test(ua);
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone === true;
+  return { isIOS, isAndroid, isStandalone, isMobile: isIOS || isAndroid };
+}
+
+function initInstallOverlay() {
+  const dismissed = localStorage.getItem('eva_install_dismissed');
+  if (dismissed) return;
+
+  const { isIOS, isAndroid, isStandalone } = detectDevice();
+  if (isStandalone) return;
+
+  const overlay = document.getElementById('installOverlay');
+  const sheet = document.getElementById('installSheet');
+
+  // Show correct instructions for this device
+  if (isIOS) {
+    overlay.querySelectorAll('.ios-only').forEach(el => el.style.display = 'block');
+  } else if (isAndroid) {
+    overlay.querySelectorAll('.android-only').forEach(el => el.style.display = 'block');
+  } else {
+    overlay.querySelectorAll('.desktop-only').forEach(el => el.style.display = 'block');
+  }
+
+  // Step 1: make overlay visible (display:flex) so iOS paints it
+  // Step 2: next frame, add .up class to trigger the slide-up transition
+  setTimeout(() => {
+    overlay.classList.add('show');           // display: flex
+    requestAnimationFrame(() => {            // wait one paint frame
+      requestAnimationFrame(() => {          // second frame = guaranteed paint on iOS
+        sheet.classList.add('up');           // now slide up
+      });
+    });
+  }, 900);
+}
+
+function dismissInstall() {
+  localStorage.setItem('eva_install_dismissed', '1');
+  const sheet = document.getElementById('installSheet');
+  const overlay = document.getElementById('installOverlay');
+  sheet.classList.remove('up');
+  setTimeout(() => {
+    overlay.classList.remove('show');
+  }, 400);
+}
+
+// Tap backdrop to dismiss
+document.getElementById('installOverlay').addEventListener('click', function(e) {
+  if (e.target === this) dismissInstall();
+});
 
 // ── WELCOME ───────────────────────────────────────────────────────
 document.getElementById('nameInput').addEventListener('input', checkReady);
@@ -1100,6 +1405,9 @@ function resetApp() {
 
 // ── BOOT ──────────────────────────────────────────────────────────
 (function boot() {
+  // Show install guide on first visit
+  initInstallOverlay();
+
   const storedName = localStorage.getItem('eva_name');
   if (storedName) {
     userName = storedName;
